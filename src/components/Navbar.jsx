@@ -41,6 +41,8 @@ export default function Navbar() {
                         <NavLink href="/my-library" label="My Library" exact />
                         <NavLink href="/books" label="Browse Books" />
                         <NavLink href="/tutorials" label="Tutorials" />
+                        <div className="divider my-1"></div>
+                        <NavLink href="/admin/dashboard" label="Admin Dashboard" />
                     </ul>
                 </div>
 
@@ -63,6 +65,7 @@ export default function Navbar() {
                     <NavLink href="/my-library" label="My Library" exact />
                     <NavLink href="/books" label="Browse Books" />
                     <NavLink href="/tutorials" label="Tutorials" />
+                    <NavLink href="/admin/dashboard" label="Dashboard" />
                 </ul>
             </div>
 
