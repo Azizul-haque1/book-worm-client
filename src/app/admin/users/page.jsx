@@ -14,7 +14,7 @@ export default function AdminUsers() {
         <div>
             <h1 className="text-3xl font-bold mb-6">User Management</h1>
 
-            <div className="shadow-sm border border-base-200 rounded-2xl overflow-hidden bg-base-100">
+            <div className="shadow-sm border border-base-200 rounded-2xl overflow-x-auto bg-base-100">
                 <table className="table w-full">
                     <thead className="bg-base-200/50">
                         <tr>
