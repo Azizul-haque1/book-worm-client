@@ -7,11 +7,14 @@ import { Mail, Lock, Eye, EyeOff, BookOpen, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const router = useRouter()
 
     const blob1Ref = useRef(null);
     const blob2Ref = useRef(null);
@@ -39,12 +42,38 @@ export default function LoginPage() {
         });
     }, { scope: containerRef });
 
-    const onSubmit = (data) => {
-        setIsLoading(true);
-        console.log("Form Data:", data);
-        // Simulate login delay
-        setTimeout(() => setIsLoading(false), 2000);
+    const onSubmit = async (data) => {
+        try {
+            setIsLoading(true);
+
+            const res = await fetch("http://localhost:4000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                return (toast.error(result.message) || toast.error("Something went wrong"));
+            }
+
+            // ✅ Success
+            toast.success("Login successful");
+            // router.push("/dashboard");
+            router.push("/");
+
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message || "Network error");
+        } finally {
+            setIsLoading(false);
+        }
     };
+
+
+
 
     const containerVariants = {
         hidden: { opacity: 0 },
