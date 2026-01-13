@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
 
-export function proxy(req) {
+export function proxy(request) {
   // console.log("data");
-  const token = req.cookies.get("token");
-  // console.log(token);
+  const token = request.cookies.get("token")?.value;
+
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   return NextResponse.next();
 }
 
-// Apply to all paths
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/admin/dashboard/:path*", "/my-library"],
 };

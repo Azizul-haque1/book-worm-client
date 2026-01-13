@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "@/context/AuthContext";
+import getUser from "@/app/lib/getUser";
 // ... imports ...
 
 const geistSans = Geist({
@@ -13,15 +15,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const user = await getUser();
+  console.log("user", user);
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <Toaster position="top-center" reverseOrder={false} />
-
-        {children}
+        <AuthProvider initialUser={user}>{children}</AuthProvider>
       </body>
     </html>
   );

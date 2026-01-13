@@ -54,6 +54,7 @@ export default function LoginPage() {
             });
 
             const result = await res.json();
+            console.log(result);
 
             if (!res.ok) {
                 return (toast.error(result.message) || toast.error("Something went wrong"));

@@ -6,6 +6,7 @@ import { LayoutDashboard, BookText, Users, MessageSquare, Tags, Settings, LogOut
 import Logo from "@/components/shared/Logo";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 const sidebarLinks = [
     { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
@@ -18,6 +19,31 @@ const sidebarLinks = [
 export default function AdminLayout({ children }) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const handleLogout = async () => {
+        try {
+            const res = await fetch('http://localhost:4000/logout', {
+                method: "POST",
+                credentials: "include",
+
+            })
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return toast.error(data.message || "Logout failed")
+            }
+
+            console.log(data.message);
+
+            // redirect after logout
+            window.location.href = "/login";
+        }
+        catch (error) {
+            console.error(error.message);
+            alert("Logout failed");
+        }
+    }
 
     // Close sidebar on route change
     useEffect(() => {
@@ -67,7 +93,7 @@ export default function AdminLayout({ children }) {
                         </Link>
                     </li>
                     <li>
-                        <button className="text-error font-medium">
+                        <button onClick={handleLogout} className="text-error font-medium">
                             <LogOut size={20} />
                             Logout
                         </button>

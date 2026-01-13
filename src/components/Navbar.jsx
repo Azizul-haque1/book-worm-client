@@ -4,8 +4,13 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import NavLink from "./NavLink";
 import { motion } from "framer-motion";
+import getUser from "@/app/lib/getUser";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
+    const { user } = useAuth()
+    console.log('user', user);
+
     return (
         <motion.div
             initial={{ y: -100, opacity: 0 }}

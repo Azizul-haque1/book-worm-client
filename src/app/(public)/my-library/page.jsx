@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Book, CheckCircle, Clock } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const books1 = [
   {
@@ -25,6 +26,8 @@ const books1 = [
 
 export default function MyLibrary() {
   const [activeTab, setActiveTab] = useState("reading");
+  const { user } = useAuth()
+  console.log(user);
 
   const tabs = [
     { id: "reading", label: "Currently Reading", icon: <Book className="w-4 h-4" /> },
@@ -49,8 +52,8 @@ export default function MyLibrary() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`btn rounded-full gap-2 ${activeTab === tab.id
-                  ? "btn-primary text-white"
-                  : "btn-ghost hover:bg-base-200"
+                ? "btn-primary text-white"
+                : "btn-ghost hover:bg-base-200"
                 }`}
             >
               {tab.icon}
