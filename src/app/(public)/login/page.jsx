@@ -9,10 +9,12 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { setUser } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter()
 
@@ -54,11 +56,17 @@ export default function LoginPage() {
             });
 
             const result = await res.json();
-            console.log(result);
+
+            console.log(result
+
+            );
 
             if (!res.ok) {
                 return (toast.error(result.message) || toast.error("Something went wrong"));
             }
+            setUser(result.user)
+
+
 
             // ✅ Success
             toast.success("Login successful");

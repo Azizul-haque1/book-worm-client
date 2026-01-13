@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, BookText, Users, MessageSquare, Tags, Settings, LogOut, Menu, X } from "lucide-react";
 import Logo from "@/components/shared/Logo";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
+import { logoutUser } from "@/app/actions/auth";
+import Image from "next/image";
 
 const sidebarLinks = [
     { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard size={20} /> },
@@ -19,29 +22,19 @@ const sidebarLinks = [
 export default function AdminLayout({ children }) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const { user, setUser } = useAuth();
+    const router = useRouter();
 
     const handleLogout = async () => {
         try {
-            const res = await fetch('http://localhost:4000/logout', {
-                method: "POST",
-                credentials: "include",
-
-            })
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                return toast.error(data.message || "Logout failed")
-            }
-
-            console.log(data.message);
-
-            // redirect after logout
-            window.location.href = "/login";
+            await logoutUser();
+            setUser(null);
+            toast.success("Logged out successfully");
+            router.push("/login");
         }
         catch (error) {
             console.error(error.message);
-            alert("Logout failed");
+            toast.error("Logout failed");
         }
     }
 
@@ -153,8 +146,14 @@ export default function AdminLayout({ children }) {
                         </div>
                     </button>
                     <div className="avatar placeholder">
-                        <div className="bg-neutral text-neutral-content rounded-full w-8">
-                            <span className="text-xs">A</span>
+                        <div className="w-8 rounded-full">
+                            <Image
+                                width={32}
+                                height={32}
+                                unoptimized
+                                alt="User"
+                                src={user?.image || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                            />
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Toaster position="top-center" reverseOrder={false} />
-        <AuthProvider initialUser={user}>{children}</AuthProvider>
+        <AuthProvider initialUser={user?.user}>{children}</AuthProvider>
       </body>
     </html>
   );

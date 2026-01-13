@@ -12,7 +12,7 @@ const books = [
 export default function AdminBooks() {
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center  mt-10">
                 <h1 className="text-3xl font-bold">Manage Books</h1>
                 <button className="btn btn-primary gap-2">
                     <Plus size={18} />
