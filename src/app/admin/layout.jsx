@@ -122,52 +122,56 @@ export default function AdminLayout({ children }) {
                 )}
             </AnimatePresence>
 
-            {/* Application Header */}
-            <div className="fixed top-0 left-0 right-0 h-16 bg-base-100 border-b border-base-300 z-50 flex items-center justify-between px-6 lg:ml-64 transition-all duration-300">
-                <div className="flex items-center gap-4 lg:hidden">
-                    <button
-                        className="btn btn-square btn-ghost"
-                        onClick={() => setIsSidebarOpen(true)}
-                    >
-                        <Menu size={24} />
-                    </button>
-                    <span className="font-bold text-lg">BookWorm Admin</span>
-                </div>
-
-                <div className="flex-1 hidden lg:flex items-center gap-4">
-                    <h1 className="text-lg font-bold">Dashboard</h1>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <button className="btn btn-circle btn-ghost btn-sm">
-                        <div className="indicator">
-                            <MessageSquare size={20} />
-                            <span className="badge badge-xs badge-primary indicator-item"></span>
-                        </div>
-                    </button>
-                    <div className="avatar placeholder">
-                        <div className="w-8 rounded-full">
-                            <Image
-                                width={32}
-                                height={32}
-                                unoptimized
-                                alt="User"
-                                src={user?.image || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Desktop Sidebar */}
+            {/* Desktop Sidebar (Fixed) */}
             <aside className="w-64 bg-base-100 hidden lg:block border-r border-base-300 fixed h-full top-0 z-50">
                 <SidebarContent />
             </aside>
 
-            {/* Main Content */}
-            <main className="flex-1 lg:ml-64 p-4 md:p-8 pt-24 min-w-0">
-                {children}
-            </main>
+            {/* Main Content Wrapper (shifted right by sidebar width) */}
+            <div className="flex-1 flex flex-col min-h-screen lg:ml-64 transition-all duration-300">
+
+                {/* Header (Sticky top) */}
+                <header className="sticky top-0 bg-base-100 border-b border-base-300 z-40 h-16 flex items-center justify-between px-6 shadow-sm">
+                    <div className="flex items-center gap-4 lg:hidden">
+                        <button
+                            className="btn btn-square btn-ghost"
+                            onClick={() => setIsSidebarOpen(true)}
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <span className="font-bold text-lg">BookWorm Admin</span>
+                    </div>
+
+                    <div className="flex-1 hidden lg:flex items-center gap-4">
+                        <h1 className="text-lg font-bold">Dashboard</h1>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <button className="btn btn-circle btn-ghost btn-sm">
+                            <div className="indicator">
+                                <MessageSquare size={20} />
+                                <span className="badge badge-xs badge-primary indicator-item"></span>
+                            </div>
+                        </button>
+                        <div className="avatar placeholder">
+                            <div className="w-8 rounded-full">
+                                <Image
+                                    width={32}
+                                    height={32}
+                                    unoptimized
+                                    alt="User"
+                                    src={user?.image || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* Page Content */}
+                <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+                    {children}
+                </main>
+            </div>
         </div>
     );
 }
