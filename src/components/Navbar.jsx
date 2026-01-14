@@ -18,6 +18,27 @@ export default function Navbar() {
     const router = useRouter();
 
 
+    console.log(user, 'user');
+
+
+
+    const baseLinks = [
+        { href: "/my-library", label: "My Library", exact: true },
+        { href: "/books", label: "Browse Books" },
+        { href: "/tutorials", label: "Tutorials" },
+    ];
+
+    const adminLinks = [
+        { href: "/admin/dashboard", label: "Dashboard" },
+    ];
+
+    const navLinks = [
+        ...baseLinks,
+        ...(user?.role === "admin" ? adminLinks : []),
+    ];
+
+
+
     // Add scroll effect for glassmorphism
     useEffect(() => {
         const handleScroll = () => {
@@ -26,6 +47,8 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+
 
     const handleLogout = async () => {
         await logoutUser();
@@ -46,6 +69,10 @@ export default function Navbar() {
             }
         }
     };
+
+
+
+
 
     return (
         <motion.div
@@ -70,11 +97,14 @@ export default function Navbar() {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-xl bg-base-100/90 backdrop-blur-md rounded-2xl w-52 border border-white/10"
                         >
-                            <NavLink href="/my-library" label="My Library" exact />
-                            <NavLink href="/books" label="Browse Books" />
-                            <NavLink href="/tutorials" label="Tutorials" />
-                            <div className="divider my-1"></div>
-                            <NavLink href="/admin/dashboard" label="Admin Dashboard" />
+                            {navLinks.map((link, index) => (
+                                <NavLink
+                                    key={link.href}
+                                    href={link.href}
+                                    label={link.label}
+                                    exact={link.exact}
+                                />
+                            ))}
                         </ul>
                     </div>
 
@@ -96,10 +126,14 @@ export default function Navbar() {
                 {/* Center (Desktop) */}
                 <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
                     <ul className="menu menu-horizontal px-1 gap-1 bg-base-200/50 rounded-full p-1.5 border border-white/5 backdrop-blur-sm shadow-sm">
-                        <NavLink href="/my-library" label="My Library" exact />
-                        <NavLink href="/books" label="Browse Books" />
-                        <NavLink href="/tutorials" label="Tutorials" />
-                        <NavLink href="/admin/dashboard" label="Dashboard" />
+                        {navLinks.map((link) => (
+                            <NavLink
+                                key={link.href}
+                                href={link.href}
+                                label={link.label}
+                                exact={link.exact}
+                            />
+                        ))}
                     </ul>
                 </div>
 

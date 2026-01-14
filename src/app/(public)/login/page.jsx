@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { Mail, Lock, Eye, EyeOff, BookOpen, Github } from "lucide-react";
@@ -14,13 +14,20 @@ import { useAuth } from "@/context/AuthContext";
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const { setUser } = useAuth()
+    const { setUser, user } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter()
 
     const blob1Ref = useRef(null);
     const blob2Ref = useRef(null);
     const containerRef = useRef(null);
+
+
+    useEffect(() => {
+        if (user) {
+            router.push('/')
+        }
+    }, [user, router])
 
     useGSAP(() => {
         // Floating animation for blobs
@@ -48,7 +55,7 @@ export default function LoginPage() {
         try {
             setIsLoading(true);
 
-            const res = await fetch("http://localhost:4000/login", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -65,9 +72,6 @@ export default function LoginPage() {
                 return (toast.error(result.message) || toast.error("Something went wrong"));
             }
             setUser(result.user)
-
-
-
             // ✅ Success
             toast.success("Login successful");
             // router.push("/dashboard");

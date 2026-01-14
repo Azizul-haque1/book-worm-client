@@ -10,7 +10,7 @@ export default function AdminUsers() {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch("http://localhost:4000/users", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
                 credentials: "include",
             });
             if (!res.ok) throw new Error("Failed to fetch users");
@@ -32,7 +32,7 @@ export default function AdminUsers() {
         if (!window.confirm("Are you sure you want to delete this user?")) return;
 
         try {
-            const res = await fetch(`http://localhost:4000/users/${userId}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -51,7 +51,7 @@ export default function AdminUsers() {
         const newRole = currentRole === "admin" ? "user" : "admin";
 
         try {
-            const res = await fetch(`http://localhost:4000/users/${userId}/role`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/role`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ role: newRole }),

@@ -10,7 +10,7 @@ export default async function getUser() {
   if (!tokenCookie) return null;
 
   try {
-    const res = await fetch("http://localhost:4000/me", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
       headers: {
         Cookie: `token=${tokenCookie.value}`, // send cookie to backend
       },

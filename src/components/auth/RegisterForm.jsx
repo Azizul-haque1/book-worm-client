@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { User, Mail, Lock, Eye, EyeOff, BookOpen, ArrowRight, Github, Image as ImageIcon } from "lucide-react";
@@ -9,11 +9,13 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { user } = useAuth()
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const router = useRouter()
 
@@ -22,6 +24,10 @@ export default function RegisterForm() {
     const blob2Ref = useRef(null);
     const containerRef = useRef(null);
 
+
+    useEffect(() => {
+        if (user) return router.push('/')
+    }, [user, router])
     useGSAP(() => {
         gsap.to(blob1Ref.current, {
             y: 50,
@@ -76,7 +82,7 @@ export default function RegisterForm() {
 
 
         try {
-            const res = await fetch("http://localhost:4000/register", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
